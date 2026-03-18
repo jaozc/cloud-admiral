@@ -45,7 +45,7 @@ Cloud Admiral is an intelligent AI agent designed to simplify and optimize Kuber
 3. Configure environment variables:
    ```bash
    cp .env.example .env
-   # Edite .env com seu Kubeconfig e chaves de API
+   # Edit the .env file with your Kubeconfig and API keys.
    ```
 
 4. Execute o agente:
