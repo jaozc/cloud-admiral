@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloud-admiral-config
+  namespace: {{ .Values.namespace }}
+data:
+  PROMETHEUS_URL: {{ .Values.config.prometheusUrl | quote }}
+  ELASTIC_URL: {{ .Values.config.elasticUrl | quote }}
+  ELASTIC_USER: {{ .Values.config.elasticUser | quote }}
+  POLL_INTERVAL_SECONDS: {{ .Values.config.pollIntervalSeconds | quote }}
+  LOG_LEVEL: {{ .Values.config.logLevel | quote }}
+  AGENT_MAX_ITERATIONS: {{ .Values.config.agentMaxIterations | quote }}

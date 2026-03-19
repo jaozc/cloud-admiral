@@ -1,0 +1,30 @@
+image:
+  repository: cloud-admiral-agent
+  tag: "latest"
+  pullPolicy: Never
+
+# Namespace where everything will be installed
+namespace: monitoring
+
+# Agent settings (non-sensitive)
+config:
+  prometheusUrl: "http://prometheus-server.monitoring.svc.cluster.local:9090"
+  elasticUrl: "http://elasticsearch-master.monitoring.svc.cluster.local:9200"
+  elasticUser: "elastic"
+  pollIntervalSeconds: "60"
+  logLevel: "INFO"
+  agentMaxIterations: "5"
+
+# Secrets — override at deployment time, never commit real values
+secrets:
+  openaiApiKey: "SUBSTITUA_NA_HORA_DO_DEPLOY"
+  elasticPassword: "SUBSTITUA_NA_HORA_DO_DEPLOY"
+
+# Resources
+resources:
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"

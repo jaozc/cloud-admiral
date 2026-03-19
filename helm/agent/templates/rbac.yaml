@@ -1,0 +1,29 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cloud-admiral-cluster-role
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "nodes", "events", "namespaces"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "statefulsets"]
+    verbs: ["get", "list", "watch", "patch", "update"]
+  - apiGroups: ["apps"]
+    resources: ["deployments/scale", "statefulsets/scale"]
+    verbs: ["get", "update", "patch"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cloud-admiral-cluster-role-binding
+subjects:
+  - kind: ServiceAccount
+    name: cloud-admiral
+    namespace: {{ .Values.namespace }}
+roleRef:
+  kind: ClusterRole
+  name: cloud-admiral-cluster-role
+  apiGroup: rbac.authorization.k8s.io

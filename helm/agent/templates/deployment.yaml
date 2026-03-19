@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-admiral-agent
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: cloud-admiral-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-admiral-agent
+  template:
+    metadata:
+      labels:
+        app: cloud-admiral-agent
+    spec:
+      serviceAccountName: cloud-admiral-agent
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: cloud-admiral-agent
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: cloud-admiral-config
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cloud-admiral-secrets
+                  key: OPENAI_API_KEY
+            - name: ELASTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cloud-admiral-secrets
+                  key: ELASTIC_PASSWORD
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
